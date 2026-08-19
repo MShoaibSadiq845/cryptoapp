@@ -91,9 +91,10 @@ function DashboardContent() {
     setIsLoadingData(true);
     setDataError('');
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
       const [usersRes, swapsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/users'),
-        fetch('http://localhost:5000/api/swaps'),
+        fetch(`${apiUrl}/users`),
+        fetch(`${apiUrl}/swaps`),
       ]);
 
       const usersData = await usersRes.json();
@@ -132,7 +133,8 @@ function DashboardContent() {
     setRoleMessage('');
 
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${targetUser._id}/role`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${apiUrl}/users/${targetUser._id}/role`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role: newRole }),
@@ -165,7 +167,8 @@ function DashboardContent() {
     if (!userId) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${userId}/role`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${apiUrl}/users/${userId}/role`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role: 'admin' }),

@@ -264,7 +264,8 @@ export default function MarketTrends() {
     const estimatedRec = amountNum / (selectedCoin.rawPrice || 1);
 
     try {
-      const response = await fetch('http://localhost:5000/api/swaps', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${apiUrl}/swaps`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
