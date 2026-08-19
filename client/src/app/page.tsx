@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
@@ -29,6 +29,7 @@ import { useUpdateWalletMutation } from '../services/authApi';
 export default function Home() {
   const dispatch = useAppDispatch();
   const { user, isAuthenticated, token } = useAppSelector((state) => state.auth);
+  const [mounted, setMounted] = useState(false);
   const [walletModalOpen, setWalletModalOpen] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [connected, setConnected] = useState(false);
@@ -37,6 +38,18 @@ export default function Home() {
   const [selectedWalletName, setSelectedWalletName] = useState('');
 
   const [updateWalletMutation] = useUpdateWalletMutation();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !isAuthenticated) {
+      window.location.href = '/login';
+    }
+  }, [mounted, isAuthenticated]);
+
+  if (!mounted || !isAuthenticated) return null;
 
   const handleConnectWallet = () => {
     setWalletModalOpen(true);
