@@ -6,9 +6,9 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor() {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID || process.env.Google_Client_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || process.env.Google_Client_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      clientID: process.env.GOOGLE_CLIENT_ID || process.env.Google_Client_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || process.env.Google_Client_SECRET || '',
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || 'https://cryptoapp-production-991c.up.railway.app/api/auth/google/callback',
       scope: ['email', 'profile'],
     });
   }

@@ -16,9 +16,9 @@ const passport_google_oauth20_1 = require("passport-google-oauth20");
 let GoogleStrategy = class GoogleStrategy extends (0, passport_1.PassportStrategy)(passport_google_oauth20_1.Strategy, 'google') {
     constructor() {
         super({
-            clientID: process.env.GOOGLE_CLIENT_ID || process.env.Google_Client_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || process.env.Google_Client_SECRET,
-            callbackURL: process.env.GOOGLE_CALLBACK_URL,
+            clientID: process.env.GOOGLE_CLIENT_ID || process.env.Google_Client_ID || '',
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || process.env.Google_Client_SECRET || '',
+            callbackURL: process.env.GOOGLE_CALLBACK_URL || 'https://cryptoapp-production-991c.up.railway.app/api/auth/google/callback',
             scope: ['email', 'profile'],
         });
     }
