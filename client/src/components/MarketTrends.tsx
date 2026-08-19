@@ -166,18 +166,35 @@ export default function MarketTrends() {
   const [tradeSuccessMsg, setTradeSuccessMsg] = useState('');
   const [tradeError, setTradeError] = useState('');
 
-  const fetchLiveCryptoData = async () => {
+  const fetchLiveCryptoData = async (catParam?: 'all' | 'gainers' | 'defi' | 'layer1') => {
+    const cat = catParam || selectedCategory;
     setIsLoadingApi(true);
+
+    let url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,binancecoin,tether,solana,uniswap,ripple,avalanche&sparkline=true';
+
+    if (cat === 'gainers') {
+      url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=true';
+    } else if (cat === 'defi') {
+      url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=decentralized-finance-defi&order=market_cap_desc&per_page=8&page=1&sparkline=true';
+    } else if (cat === 'layer1') {
+      url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,binancecoin,solana,cardano,avalanche-2,polkadot,near&sparkline=true';
+    }
+
     try {
-      const url =
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,binancecoin,tether,solana,uniswap,ripple,avalanche&sparkline=true';
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`API response error: ${response.statusText}`);
       }
-      const data = await response.json();
+      let data = await response.json();
 
       if (Array.isArray(data) && data.length > 0) {
+        // If top gainers tab, sort by highest 24h price change percentage
+        if (cat === 'gainers') {
+          data = [...data]
+            .sort((a, b) => (b.price_change_percentage_24h || 0) - (a.price_change_percentage_24h || 0))
+            .slice(0, 8);
+        }
+
         const formattedCoins: CryptoCoin[] = data.map((coin: any) => {
           const sym = (coin.symbol || '').toLowerCase();
           const changeVal = coin.price_change_percentage_24h ?? 0;
@@ -199,11 +216,6 @@ export default function MarketTrends() {
             minimumFractionDigits: coin.current_price < 1 ? 4 : 2,
           }).format(coin.current_price);
 
-          let category: 'all' | 'gainers' | 'defi' | 'layer1' = 'layer1';
-          if (sym === 'uni') category = 'defi';
-          if (sym === 'usdt') category = 'all';
-          if (changeVal > 2) category = 'gainers';
-
           return {
             id: coin.id,
             symbol: coin.symbol.toUpperCase(),
@@ -212,8 +224,8 @@ export default function MarketTrends() {
             price: priceFormatted,
             change: `${isPositive ? '+' : ''}${changeVal.toFixed(2)}%`,
             isPositive,
-            color: DEFAULT_COIN_COLORS[sym] || '#73FDAA',
-            category,
+            color: DEFAULT_COIN_COLORS[sym] || (isPositive ? '#73FDAA' : '#FF5C5C'),
+            category: cat,
             points,
             image: coin.image,
           };
@@ -230,16 +242,13 @@ export default function MarketTrends() {
   };
 
   useEffect(() => {
-    fetchLiveCryptoData();
+    fetchLiveCryptoData(selectedCategory);
     // Auto-refresh every 45 seconds
-    const interval = setInterval(fetchLiveCryptoData, 45000);
+    const interval = setInterval(() => fetchLiveCryptoData(selectedCategory), 45000);
     return () => clearInterval(interval);
   }, []);
 
-  const filteredCoins = coins.filter((coin) => {
-    if (selectedCategory === 'all') return true;
-    return coin.category === selectedCategory;
-  });
+  const filteredCoins = coins;
 
   const handleOpenTrade = (coin: CryptoCoin) => {
     setSelectedCoin(coin);
@@ -377,7 +386,7 @@ export default function MarketTrends() {
               )}
             </Box>
             <Tooltip title="Refresh Live Market Data">
-              <IconButton onClick={fetchLiveCryptoData} size="small" sx={{ color: '#73FDAA' }}>
+              <IconButton onClick={() => fetchLiveCryptoData(selectedCategory)} size="small" sx={{ color: '#73FDAA' }}>
                 <RefreshIcon className={isLoadingApi ? 'spin-icon' : ''} />
               </IconButton>
             </Tooltip>
@@ -386,7 +395,10 @@ export default function MarketTrends() {
           {/* Filter Tabs */}
           <Tabs
             value={selectedCategory}
-            onChange={(_, val) => setSelectedCategory(val)}
+            onChange={(_, val) => {
+              setSelectedCategory(val);
+              fetchLiveCryptoData(val);
+            }}
             sx={{
               bgcolor: 'rgba(255, 255, 255, 0.03)',
               borderRadius: '24px',
