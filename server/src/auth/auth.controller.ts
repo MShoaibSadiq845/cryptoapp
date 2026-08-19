@@ -45,7 +45,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
     try {
-      const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+      const clientUrl = process.env.CLIENT_URL || 'https://cryptoapp-two-henna.vercel.app';
       const userResult = await this.authService.validateOAuthUser(req.user);
       const { token, user } = userResult;
 
@@ -59,7 +59,7 @@ export class AuthController {
 
       return res.redirect(redirectUrl);
     } catch (error) {
-      const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+      const clientUrl = process.env.CLIENT_URL || 'https://cryptoapp-two-henna.vercel.app';
       return res.redirect(
         `${clientUrl}/login?error=${encodeURIComponent(
           'Failed to authenticate with Google',

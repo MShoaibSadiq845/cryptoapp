@@ -32,14 +32,14 @@ let AuthController = class AuthController {
     }
     async googleAuthRedirect(req, res) {
         try {
-            const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+            const clientUrl = process.env.CLIENT_URL || 'https://cryptoapp-two-henna.vercel.app';
             const userResult = await this.authService.validateOAuthUser(req.user);
             const { token, user } = userResult;
             const redirectUrl = `${clientUrl}/auth-callback?token=${encodeURIComponent(token)}&id=${encodeURIComponent(user._id.toString())}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}&picture=${encodeURIComponent(user.picture || '')}`;
             return res.redirect(redirectUrl);
         }
         catch (error) {
-            const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+            const clientUrl = process.env.CLIENT_URL || 'https://cryptoapp-two-henna.vercel.app';
             return res.redirect(`${clientUrl}/login?error=${encodeURIComponent('Failed to authenticate with Google')}`);
         }
     }
