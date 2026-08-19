@@ -1,0 +1,43 @@
+import { Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+
+@Injectable()
+export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+  constructor() {
+    super({
+      clientID:
+        process.env.Google_Client_ID ||
+        process.env.GOOGLE_CLIENT_ID ||
+        '298335616712-f0olq3pob6mvf9ndia2b3cjvh445tve2.apps.googleusercontent.com',
+      clientSecret:
+        process.env.Google_Client_SECRET ||
+        process.env.GOOGLE_CLIENT_SECRET ||
+        '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',
+      callbackURL:
+        process.env.GOOGLE_CALLBACK_URL ||
+        'http://localhost:5000/api/auth/google/callback',
+      scope: ['email', 'profile'],
+    });
+  }
+
+  async validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: any,
+    done: VerifyCallback,
+  ): Promise<any> {
+    const { id, name, emails, photos } = profile;
+    const user = {
+      googleId: id,
+      email: emails && emails[0] ? emails[0].value : '',
+      name:
+        name && name.givenName && name.familyName
+          ? `${name.givenName} ${name.familyName}`
+          : profile.displayName || 'Web3 User',
+      picture: photos && photos[0] ? photos[0].value : '',
+      accessToken,
+    };
+    done(null, user);
+  }
+}
