@@ -105,6 +105,7 @@ let NewsletterService = NewsletterService_1 = class NewsletterService {
         });
     }
     async sendConfirmationEmail(email) {
+        const appUrl = process.env.CLIENT_URL || 'https://cryptoapp-two-henna.vercel.app';
         const fromAddress = process.env.EMAIL_FROM || '"Circlechain Web3" <sadiqshoaibbilal9140@gmail.com>';
         const transporter = this.getTransporter();
         const htmlContent = `
@@ -237,7 +238,7 @@ let NewsletterService = NewsletterService_1 = class NewsletterService {
               </div>
             </div>
 
-            <a href="http://localhost:3000" class="cta-btn">Explore Circlechain Platform</a>
+            <a href="${appUrl}" class="cta-btn">Explore Circlechain Platform</a>
           </div>
           <div class="footer">
             © 2026 Circlechain Inc. Global Decentralize Currency Platform.<br/>
