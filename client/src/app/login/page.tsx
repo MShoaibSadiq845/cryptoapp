@@ -51,7 +51,8 @@ function LoginFormContent() {
   }, [searchParams]);
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://cryptoapp-production-991c.up.railway.app';
+    window.location.href = `${backendUrl}/api/auth/google`;
   };
 
   const handleEmailLogin = async (e: React.FormEvent) => {

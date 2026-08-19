@@ -44,7 +44,8 @@ function SignupContent() {
   }, [mounted, isAuthenticated, router]);
 
   const handleGoogleSignup = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://cryptoapp-production-991c.up.railway.app';
+    window.location.href = `${backendUrl}/api/auth/google`;
   };
 
   const handleSignupSubmit = async (e: React.FormEvent) => {
