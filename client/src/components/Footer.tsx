@@ -50,7 +50,7 @@ export default function Footer() {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={{ xs: 4, md: 4 }} justifyContent="space-between" alignItems="flex-start">
+        <Grid container spacing={{ xs: 4, md: 4 }} sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
 
           {/* 1. Circlechain Logo & Description */}
           <Grid size={{ xs: 12, md: 4 }}>

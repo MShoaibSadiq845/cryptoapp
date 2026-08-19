@@ -219,10 +219,12 @@ export default function NewsletterSection() {
                 disabled={isLoading}
                 fullWidth
                 variant="outlined"
-                InputProps={{
-                  startAdornment: (
-                    <EmailIcon sx={{ mr: 1, color: '#73FDAA', fontSize: 20 }} />
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <EmailIcon sx={{ mr: 1, color: '#73FDAA', fontSize: 20 }} />
+                    ),
+                  },
                 }}
                 sx={{
                   '& .MuiOutlinedInput-root': {

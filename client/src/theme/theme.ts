@@ -72,21 +72,21 @@ export const web3Theme = createTheme({
           '&:hover': {
             transform: 'translateY(-2px)',
           },
-        },
-        containedPrimary: {
-          backgroundColor: '#73FDAA',
-          color: '#010010',
-          '&:hover': {
-            backgroundColor: '#8CFFB8',
-            boxShadow: '0 6px 20px rgba(115, 253, 170, 0.4)',
+          '&.MuiButton-containedPrimary': {
+            backgroundColor: '#73FDAA',
+            color: '#010010',
+            '&:hover': {
+              backgroundColor: '#8CFFB8',
+              boxShadow: '0 6px 20px rgba(115, 253, 170, 0.4)',
+            },
           },
-        },
-        outlinedPrimary: {
-          borderColor: '#73FDAA',
-          color: '#73FDAA',
-          '&:hover': {
-            borderColor: '#8CFFB8',
-            backgroundColor: 'rgba(115, 253, 170, 0.1)',
+          '&.MuiButton-outlinedPrimary': {
+            borderColor: '#73FDAA',
+            color: '#73FDAA',
+            '&:hover': {
+              borderColor: '#8CFFB8',
+              backgroundColor: 'rgba(115, 253, 170, 0.1)',
+            },
           },
         },
       },

@@ -201,12 +201,14 @@ export default function Navbar() {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={() => setAnchorEl(null)}
-                PaperProps={{
-                  sx: {
-                    mt: 1.5, bgcolor: '#0B0A1C',
-                    border: '1px solid rgba(115,253,170,0.25)',
-                    borderRadius: '16px',
-                    minWidth: 200,
+                slotProps={{
+                  paper: {
+                    sx: {
+                      mt: 1.5, bgcolor: '#0B0A1C',
+                      border: '1px solid rgba(115,253,170,0.25)',
+                      borderRadius: '16px',
+                      minWidth: 200,
+                    },
                   },
                 }}
               >
@@ -262,7 +264,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       <Drawer anchor="right" open={mobileOpen} onClose={() => setMobileOpen(false)}
-        PaperProps={{ sx: { width: 260, bgcolor: '#010010', p: 3 } }}
+        slotProps={{ paper: { sx: { width: 260, bgcolor: '#010010', p: 3 } } }}
       >
         <Typography variant="h6" sx={{ color: '#73FDAA', fontWeight: 800, mb: 3 }}>Circlechain</Typography>
         <List>

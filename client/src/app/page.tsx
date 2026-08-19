@@ -132,14 +132,16 @@ export default function Home() {
       <Dialog
         open={walletModalOpen}
         onClose={() => !connecting && setWalletModalOpen(false)}
-        PaperProps={{
-          sx: {
-            bgcolor: '#0B0A1C',
-            border: '1px solid rgba(115,253,170,0.3)',
-            borderRadius: '20px',
-            p: 2,
-            maxWidth: 420,
-            width: '100%',
+        slotProps={{
+          paper: {
+            sx: {
+              bgcolor: '#0B0A1C',
+              border: '1px solid rgba(115,253,170,0.3)',
+              borderRadius: '20px',
+              p: 2,
+              maxWidth: 420,
+              width: '100%',
+            },
           },
         }}
       >
