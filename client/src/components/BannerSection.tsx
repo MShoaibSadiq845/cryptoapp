@@ -16,7 +16,7 @@ export default function BannerSection() {
         overflow: 'hidden',
       }}
     >
-      {/* Centered text block — matches Figma "Global Decentralize..." */}
+      {/* Centered text block */}
       <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
         <Typography
           variant="h3"
@@ -33,7 +33,7 @@ export default function BannerSection() {
           <br />
           blockchain technology
         </Typography>
-        {/* Green subtitle — exact Figma copy */}
+        {/* Green subtitle */}
         <Typography
           variant="body1"
           sx={{
@@ -46,7 +46,7 @@ export default function BannerSection() {
         </Typography>
       </Box>
 
-      {/* Two-column layout: Robot illustration LEFT + Feature cards RIGHT */}
+      {/* Two-column layout: Illustration LEFT + Feature cards RIGHT */}
       <Container maxWidth="lg">
         <Box
           sx={{
@@ -56,7 +56,7 @@ export default function BannerSection() {
             gap: { xs: 4, md: 6 },
           }}
         >
-          {/* LEFT: Robot/3D Illustration — matches Figma */}
+          {/* LEFT: Illustration */}
           <Box
             sx={{
               flex: '0 0 auto',
@@ -66,7 +66,7 @@ export default function BannerSection() {
               position: 'relative',
             }}
           >
-            {/* Green ambient glow behind robot */}
+            {/* Green ambient glow behind illustration */}
             <Box
               sx={{
                 position: 'absolute',
@@ -92,19 +92,20 @@ export default function BannerSection() {
             />
           </Box>
 
-          {/* RIGHT: Three Feature Cards — exact Figma gradient cards */}
+          {/* RIGHT: Three Feature Cards with Right-side Green Gradient */}
           <Box
             sx={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
-              gap: 2,
+              gap: 2.5,
+              width: '100%',
             }}
           >
             {[
               {
                 title: 'Access Token Market',
-                desc: 'You can sell token anytime and anywhere',
+                desc: 'Buy and sell token anytime and anywhere',
               },
               {
                 title: 'User Friendly Interface',
@@ -112,13 +113,13 @@ export default function BannerSection() {
               },
               {
                 title: 'Ownership Token control',
-                desc: 'You can buy and sell as many asset as possible',
+                desc: 'Be in control and own as many asset as possible',
               },
-            ].map((card, i) => (
+            ].map((card) => (
               <Box
                 key={card.title}
                 sx={{
-                  background: 'linear-gradient(90deg, rgba(115,253,170,0.18) 0%, rgba(115,253,170,0.06) 60%, transparent 100%)',
+                  background: 'linear-gradient(90deg, rgba(1,0,16,0.9) 20%, rgba(115,253,170,0.22) 100%)',
                   borderRadius: '12px',
                   border: '1px solid rgba(115,253,170,0.3)',
                   px: { xs: 3, md: 4 },
@@ -128,23 +129,11 @@ export default function BannerSection() {
                   cursor: 'default',
                   transition: 'all 0.25s ease',
                   '&:hover': {
-                    background: 'linear-gradient(90deg, rgba(115,253,170,0.28) 0%, rgba(115,253,170,0.1) 60%, transparent 100%)',
+                    background: 'linear-gradient(90deg, rgba(1,0,16,0.85) 10%, rgba(115,253,170,0.35) 100%)',
                     transform: 'translateX(4px)',
                   },
                 }}
               >
-                {/* Green left accent bar */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                    width: '4px',
-                    bgcolor: '#73FDAA',
-                    borderRadius: '12px 0 0 12px',
-                  }}
-                />
                 <Typography
                   variant="h6"
                   sx={{
