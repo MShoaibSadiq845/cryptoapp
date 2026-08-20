@@ -17,6 +17,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppSelector, useAppDispatch } from '../../services/store';
 import { setCredentials } from '../../services/authSlice';
@@ -46,7 +47,9 @@ function LoginFormContent() {
     }
     const err = searchParams.get('error');
     if (err) {
-      setError(decodeURIComponent(err));
+      const decodedErr = decodeURIComponent(err);
+      setError(decodedErr);
+      toast.error(decodedErr);
     }
   }, [searchParams]);
 
@@ -61,11 +64,15 @@ function LoginFormContent() {
     setSuccessInfo('');
 
     if (!email.trim()) {
-      setError('Please enter your email address.');
+      const err = 'Please enter your email address.';
+      setError(err);
+      toast.error(err);
       return;
     }
     if (!password) {
-      setError('Please enter your password.');
+      const err = 'Please enter your password.';
+      setError(err);
+      toast.error(err);
       return;
     }
 
@@ -82,14 +89,17 @@ function LoginFormContent() {
             user: response.user,
           }),
         );
+        toast.success(`Welcome back, ${response.user.name || 'User'}! Logged in successfully.`);
         router.push('/profile');
       }
     } catch (err: any) {
-      const msg =
+      const rawMsg =
         err?.data?.message ||
         err?.message ||
         'Invalid email or password. Please try again.';
-      setError(Array.isArray(msg) ? msg.join(', ') : msg);
+      const msg = Array.isArray(rawMsg) ? rawMsg.join(', ') : rawMsg;
+      setError(msg);
+      toast.error(msg);
     }
   };
 

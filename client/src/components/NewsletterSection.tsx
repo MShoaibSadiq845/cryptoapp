@@ -16,6 +16,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import toast from 'react-hot-toast';
 import { useSubscribeNewsletterMutation } from '../services/newsletterApi';
 
 export default function NewsletterSection() {
@@ -39,6 +40,7 @@ export default function NewsletterSection() {
     const error = validateEmail(email);
     if (error) {
       setEmailError(error);
+      toast.error(error);
       return;
     }
     setEmailError('');
@@ -46,22 +48,26 @@ export default function NewsletterSection() {
 
     try {
       const response = await subscribeNewsletter({ email: email.trim() }).unwrap();
+      const msg = response.message || 'Successfully subscribed! Check your inbox.';
       setResult({
         type: 'success',
-        message: response.message || 'Successfully subscribed! Check your inbox.',
+        message: msg,
       });
+      toast.success(msg);
       setEmail('');
     } catch (err: any) {
-      const message =
+      const rawMessage =
         err?.data?.message ||
         (Array.isArray(err?.data?.message)
           ? err?.data?.message?.[0]
           : null) ||
         'Something went wrong. Please try again.';
+      const message = Array.isArray(rawMessage) ? rawMessage[0] : rawMessage;
       setResult({
         type: 'error',
-        message: Array.isArray(message) ? message[0] : message,
+        message,
       });
+      toast.error(message);
     }
   };
 

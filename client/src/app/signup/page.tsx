@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '../../services/store';
@@ -55,15 +56,21 @@ function SignupContent() {
 
     const fullName = `${firstName.trim()} ${lastName.trim()}`.trim();
     if (!fullName) {
-      setError('Please provide your name.');
+      const err = 'Please provide your name.';
+      setError(err);
+      toast.error(err);
       return;
     }
     if (!email.trim()) {
-      setError('Please enter a valid email address.');
+      const err = 'Please enter a valid email address.';
+      setError(err);
+      toast.error(err);
       return;
     }
     if (!password || password.length < 6) {
-      setError('Password must be at least 6 characters long.');
+      const err = 'Password must be at least 6 characters long.';
+      setError(err);
+      toast.error(err);
       return;
     }
 
@@ -75,17 +82,21 @@ function SignupContent() {
       }).unwrap();
 
       if (response.success) {
-        setSuccessMsg('Account created successfully! Redirecting to login page...');
+        const msg = 'Account created successfully! Redirecting to login page...';
+        setSuccessMsg(msg);
+        toast.success('Account created successfully!');
         setTimeout(() => {
           router.push('/login?registered=true');
         }, 1200);
       }
     } catch (err: any) {
-      const msg =
+      const rawMsg =
         err?.data?.message ||
         err?.message ||
         'Registration failed. Please check your details and try again.';
-      setError(Array.isArray(msg) ? msg.join(', ') : msg);
+      const msg = Array.isArray(rawMsg) ? rawMsg.join(', ') : rawMsg;
+      setError(msg);
+      toast.error(msg);
     }
   };
 

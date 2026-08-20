@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ThemeRegistry from "../theme/ThemeRegistry";
 import ReduxProvider from "../services/ReduxProvider";
+import ToasterProvider from "../components/ToasterProvider";
 
 export const metadata: Metadata = {
   title: "Circlechain – Global Web3 Crypto Trading Platform",
@@ -30,9 +31,13 @@ export default function RootLayout({
       </head>
       <body>
         <ReduxProvider>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <ThemeRegistry>
+            <ToasterProvider />
+            {children}
+          </ThemeRegistry>
         </ReduxProvider>
       </body>
     </html>
   );
 }
+

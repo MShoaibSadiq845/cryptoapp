@@ -32,6 +32,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import toast from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '../../services/store';
 import { logout, updateUserWallet, updateUserPicture } from '../../services/authSlice';
 import {
@@ -80,12 +81,16 @@ function ProfileContent() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      setPictureError('Please select a valid image file (PNG, JPG, JPEG, WEBP).');
+      const err = 'Please select a valid image file (PNG, JPG, JPEG, WEBP).';
+      setPictureError(err);
+      toast.error(err);
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setPictureError('Image size must be less than 5MB.');
+      const err = 'Image size must be less than 5MB.';
+      setPictureError(err);
+      toast.error(err);
       return;
     }
 
@@ -98,16 +103,16 @@ function ProfileContent() {
         if (response.success) {
           dispatch(updateUserPicture(base64));
           setPictureSaved(true);
+          toast.success('Profile photo updated successfully!');
           setTimeout(() => setPictureSaved(false), 4000);
         }
       } catch (err: any) {
-        setPictureError(
-          err?.data?.message || err?.message || 'Failed to update profile picture in database.',
-        );
+        const errMsg = err?.data?.message || err?.message || 'Failed to update profile picture in database.';
+        setPictureError(errMsg);
+        toast.error(errMsg);
       }
     };
     reader.readAsDataURL(file);
-    // Reset file input value so user can upload again if needed
     e.target.value = '';
   };
 
@@ -135,6 +140,7 @@ function ProfileContent() {
 
   const handleLogout = () => {
     dispatch(logout());
+    toast.success('Signed out successfully!');
     window.location.href = '/login';
   };
 
@@ -142,6 +148,7 @@ function ProfileContent() {
     if (displayUser?.walletAddress) {
       navigator.clipboard.writeText(displayUser.walletAddress);
       setCopied(true);
+      toast.success('Wallet address copied to clipboard!');
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -157,13 +164,14 @@ function ProfileContent() {
         if (response.success) {
           dispatch(updateUserWallet(walletInput.trim()));
           setWalletSaved(true);
+          toast.success('Wallet address saved to database successfully!');
           setWalletInput('');
           setTimeout(() => setWalletSaved(false), 4000);
         }
       } catch (err: any) {
-        setWalletError(
-          err?.data?.message || err?.message || 'Failed to save wallet in database.',
-        );
+        const errMsg = err?.data?.message || err?.message || 'Failed to save wallet in database.';
+        setWalletError(errMsg);
+        toast.error(errMsg);
       }
     }
   };
